@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+import "./styles/Styles.css"; 
 import DashboardPage from "./pages/DashboardPage";
 import TicketsPage from "./pages/TicketsPage";
 import CreateTicketPage from "./pages/CreateTicketPage";
@@ -126,7 +127,7 @@ function App() {
     // Main wrapper for the whole page
     // BrowserRouter enables routing in the whole app
     <BrowserRouter>
-      <div style={{ padding: "20px", fontFamily: "Arial" }}>
+      <div className="app-shell page-container">
         {/* Navbar appears on every page */}
         <Navbar currentUser={currentUser} logoutUser={logoutUser} />
 
