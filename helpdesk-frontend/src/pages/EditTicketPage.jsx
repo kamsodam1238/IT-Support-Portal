@@ -11,9 +11,9 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
     const ticket = tickets.find((ticket) => String(ticket.id) === String(id));
 
     const [title, setTitle] = useState(ticket ? ticket.title : "");
-    const [status, setStatus] = useState(ticket ? ticket.status : "");
-    const [priority, setPriority] = useState(ticket ? ticket.priority : "");
-    const [department, setDepartment] = useState(ticket ? ticket.department : "");
+    const [status, setStatus] = useState(ticket ? ticket.status : "Open");
+    const [priority, setPriority] = useState(ticket ? ticket.priority : "Low");
+    const [department, setDepartment] = useState(ticket ? ticket.department : "IT");
     const [submittedBy, setSubmittedBy] = useState(ticket ? ticket.submittedBy : "");
     const [createdAt, setCreatedAt] = useState(ticket ? ticket.createdAt : "");
     const [description, setDescription] = useState(ticket ? ticket.description || "" : "");
@@ -28,39 +28,55 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
         );
     }
 
-
-    
     async function handleSubmit(event) {
         event.preventDefault();
 
-        if (title === "") {
-            setMessage("Title field is empty");
-            return;
-        }
+        async function handleSubmit(event) {
+            event.preventDefault();
 
-        const updatedTicket = {
-            title: title.trim(),
-            status: status.trim(),
-            priority: priority.trim(),
-            department: department.trim(),
-            submittedBy: submittedBy.trim(),
-            createdAt: createdAt.trim(),
-            description: description.trim()
-        };
+            const newErrors = {};
 
-        try {
-            const savedTicket = await updateTicketInBackend(id, updatedTicket);
+            if (title.trim() === "") {
+                newErrors.title = "Title is required.";
+            }
 
-            setTickets((prevTickets) =>
-                prevTickets.map((ticket) =>
-                    String(ticket.id) === String(id) ? savedTicket : ticket
-                )
-            );
+            if (submittedBy.trim() === "") {
+                newErrors.submittedBy = "Submitted By is required.";
+            }
 
-            setMessage("Ticket updated successfully.");
-            navigate(`/tickets/${id}`);
-        } catch (error) {
-            setMessage(error.message);
+            setErrors(newErrors);
+
+            if (Object.keys(newErrors).length > 0) {
+                return;
+            }
+
+            const updatedTicket = {
+                title: title.trim(),
+                status,
+                priority,
+                department,
+                submittedBy: submittedBy.trim(),
+                createdAt: createdAt.trim(),
+                description: description.trim()
+            };
+
+            setIsSaving(true);
+
+            try {
+                const savedTicket = await updateTicketInBackend(id, updatedTicket);
+
+                setTickets((prevTickets) =>
+                    prevTickets.map((ticket) =>
+                        String(ticket.id) === String(id) ? savedTicket : ticket
+                    )
+                );
+
+                navigate(`/tickets/${id}`);
+            } catch (error) {
+                setMessage(error.message);
+            } finally {
+                setIsSaving(false);
+            }
         }
     }
 

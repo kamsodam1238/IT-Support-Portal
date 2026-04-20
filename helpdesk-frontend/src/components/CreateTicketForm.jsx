@@ -11,31 +11,47 @@ function CreateTicketForm({ addTicket }) {
     const [submittedBy, setSubmittedBy] = useState("");
     const [description, setDescription] = useState("");
     const [message, setMessage] = useState("");
+    const [errors, setErrors] = useState({});
+    const [isSaving, setIsSaving] = useState(false);
 
     // useNavigate lets us move the user to another page
     const navigate = useNavigate();
+
+    function validateForm() {
+        const newErrors = {};
+
+        if (title.trim() === "") {
+            newErrors.title = "Title is required.";
+        }
+
+        if (submittedBy.trim() === "") {
+            newErrors.submittedBy = "Submitted By is required.";
+        }
+
+        if (status.trim() === "") {
+            newErrors.status = "Status is required.";
+        }
+
+        if (priority.trim() === "") {
+            newErrors.priority = "Priority is required.";
+        }
+
+        if (department.trim() === "") {
+            newErrors.department = "Department is required.";
+        }
+
+        return newErrors;
+    }
 
     async function handleSubmit(event) {
         // prevent page refresh
         event.preventDefault();
 
-        // Trim user input to remove accidental spaces
-        const cleanedTitle = title.trim();
-        const cleanedStatus = status.trim();
-        const cleanedPriority = priority.trim();
-        const cleanedDepartment = department.trim();
-        const cleanedSubmittedBY = submittedBy.trim();
-        const cleanedDescription = description.trim();
+        const validationErrors = validateForm();
+        setErrors(validationErrors);
+        setMessage("");
 
-        // Make sure all fields are filled in
-        if (
-            cleanedTitle === "" || 
-            cleanedStatus === "" || 
-            cleanedPriority === "" || 
-            cleanedDepartment === "" || 
-            cleanedSubmittedBY === ""
-        ) {
-            setMessage("Please fill in all tickets fields.");
+        if (Object.keys(validationErrors).length > 0) {
             return;
         }
 
@@ -50,16 +66,18 @@ function CreateTicketForm({ addTicket }) {
             description: cleanedDescription
         };
 
+        setIsSaving(true);
+
         try {
             // Send the ticket to the backend
             const createdTicket = await createTicketInBackend(newTicket);
 
             // Add the ticket returned by backend into frontend state
             addTicket(createdTicket);
-    
+
             // Show success message
             setMessage("Ticket created successfully in backend.");
-    
+
             // Clear the form fields
             setTitle("");
             setStatus("");
@@ -67,11 +85,13 @@ function CreateTicketForm({ addTicket }) {
             setDepartment("");
             setSubmittedBy("");
             setDescription("")
-    
+
             // Redirect the user to the tickets page
             navigate("/tickets")
         } catch (error) {
             setMessage(error.message);
+        } finally {
+            setIsSaving(false);
         }
     }
 
@@ -99,6 +119,9 @@ function CreateTicketForm({ addTicket }) {
                     placeholder="Enter ticket title"
                     style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                 />
+                {errors.title && (
+                    <p style={{ color: "red", marginTop: "4px" }}>{errors.title}</p>
+                )}
             </div>
 
             {/* Ticket status dropdown */}
@@ -116,7 +139,9 @@ function CreateTicketForm({ addTicket }) {
                     <option value="In Progress">In Progress</option>
                     <option value="Closed">Closed</option>
                 </select>
-
+                {errors.status && (
+                    <p style={{ color: "red", marginTop: "4px" }}>{errors.status}</p>
+                )}
             </div>
 
             {/* Ticket Priority input */}
@@ -133,6 +158,9 @@ function CreateTicketForm({ addTicket }) {
                     <option value="Medium">Medium</option>
                     <option value="Low">Low</option>
                 </select>
+                {errors.priority && (
+                    <p style={{ color: "red", marginTop: "4px" }}>{errors.priority}</p>
+                )}
             </div>
 
             <div style={{ marginBottom: "12px" }}>
@@ -148,6 +176,9 @@ function CreateTicketForm({ addTicket }) {
                     <option value="HR">HR</option>
                     <option value="Finance">Finance</option>
                 </select>
+                {errors.department && (
+                    <p style={{ color: "red", marginTop: "4px" }}>{errors.department}</p>
+                )}
             </div>
 
             <div style={{ marginBottom: "12px" }}>
@@ -160,10 +191,13 @@ function CreateTicketForm({ addTicket }) {
                     placeholder="Enter submitter name"
                     style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                 />
+                {errors.submittedBy && (
+                    <p style={{ color: "red", marginTop: "4px" }}>{errors.submittedBy}</p>
+                )}
             </div>
 
             <div style={{ marginBottom: "12px" }}>
-                <label>Submitted By</label>
+                <label>Description</label>
                 <br />
                 <textarea
                     value={description}
@@ -174,8 +208,12 @@ function CreateTicketForm({ addTicket }) {
             </div>
 
             {/* Submit button */}
-            <button type="submit" style={{ padding: "10px 16px" }}>
-                Add Ticket
+            <button
+                type="submit"
+                disabled={isSaving}
+                style={{ padding: "10px 16px" }}
+            >
+                {isSaving ? "Saving..." : "Add Ticket"}
             </button>
 
 
