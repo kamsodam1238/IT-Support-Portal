@@ -87,3 +87,24 @@ Each ticket has a dedicated details page showing the full ticket record.
 - ADMIN: can manage tickets, including edit, close, and delete actions
 - AGENT: can manage tickets, including edit, close, and delete actions
 - EMPLOYEE: can view and create tickets, but cannot perform management actions
+
+## Screenshots
+
+### Login Page
+![Login Page](./screenshots/login-page.png)
+
+### Dashboard
+![Dashboard](./screenshots/dashboard.png)
+
+### Tickets Page
+![Tickets Page](./screenshots/tickets-page.png)
+![Tickets Page](./screenshots/tickets-page2.png)
+
+### Create Ticket
+![Create Ticket](./screenshots/create-ticket.png)
+
+### Edit Ticket
+![Edit Ticket](./screenshots/edit-ticket.png)
+
+### Ticket Details
+![Ticket Details](./screenshots/ticket-details.png)
