@@ -170,7 +170,7 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
                 </div>
 
                 <div className="action-row">
-                    <Link to={`/tickets/${id}`}>Cancel</Link>
+                    <Link className="cancel" to={`/tickets/${id}`}>Cancel</Link>
 
                     <button className="button" type="submit" disabled={isSaving}>
                         {isSaving ? "Saving..." : "Save Changes"}

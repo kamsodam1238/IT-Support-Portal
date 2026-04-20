@@ -144,11 +144,11 @@ h3{
 }
 
 .button-secondary {
-    background-color: #64748b;
+    background-color: #0860db;
 }
 
 .button-secondary:hover {
-    background-color: #475569;
+    background-color: #697585;
 }
 
 .button-danger {
@@ -194,4 +194,8 @@ h3{
 
 .center-text {
     text-align: center;
+}
+
+.cancel{
+    color: red;
 }
