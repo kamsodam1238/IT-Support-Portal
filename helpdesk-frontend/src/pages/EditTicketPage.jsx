@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import PageHeading from "../components/PageHeading";
 import { updateTicketInBackend } from "../services/ticketService";
 
@@ -7,6 +7,7 @@ function EditTicketPage({ tickets, setTickets }) {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const isAdmin = currentUser && currentUser.role === "ADMIN";
     const ticket = tickets.find((ticket) => String(ticket.id) === String(id));
 
     const [title, setTitle] = useState(ticket ? ticket.title : "");
@@ -27,8 +28,15 @@ function EditTicketPage({ tickets, setTickets }) {
         );
     }
 
+
+    
     async function handleSubmit(event) {
         event.preventDefault();
+
+        if (title === "") {
+            setMessage("Title field is empty");
+            return;
+        }
 
         const updatedTicket = {
             title: title.trim(),
@@ -83,34 +91,45 @@ function EditTicketPage({ tickets, setTickets }) {
                 <div style={{ marginBottom: "12px" }}>
                     <label>Status</label>
                     <br />
-                    <input
+                    <select
                         type="text"
                         value={status}
                         onChange={(event) => setStatus(event.target.value)}
                         style={{ width: "100%", padding: "8px", marginTop: "4px" }}
-                    />
+                    >
+                        <option value="Open">Open</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Closed">Closed</option>
+                    </select>
                 </div>
 
                 <div style={{ marginBottom: "12px" }}>
                     <label>Priority</label>
                     <br />
-                    <input
-                        type="text"
+                    <select
                         value={priority}
                         onChange={(event) => setPriority(event.target.value)}
+                        disabled={!isAdmin}
                         style={{ width: "100%", padding: "8px", marginTop: "4px" }}
-                    />
+                    >
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
                 </div>
 
                 <div style={{ marginBottom: "12px" }}>
                     <label>Department</label>
                     <br />
-                    <input
-                        type="text"
+                    <select
                         value={department}
                         onChange={(event) => setDepartment(event.target.value)}
                         style={{ width: "100%", padding: "8px", marginTop: "4px" }}
-                    />
+                    >
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                    </select>
                 </div>
 
                 <div style={{ marginBottom: "12px" }}>
@@ -145,6 +164,10 @@ function EditTicketPage({ tickets, setTickets }) {
                         style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     />
                 </div>
+
+                <Link to={`/tickets/${id}`} style={{ marginRight: "12px" }}>
+                    Cancel
+                </Link>
 
                 <button type="submit" style={{ padding: "10px 16px" }}>
                     Save Changes
