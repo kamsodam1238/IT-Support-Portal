@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 @CrossOrigin(origins = {
         "http://localhost:5173",
-        "https://YOUR-VERCEL-FRONTEND-URL.vercel.app" })
+        "https://it-support-portal-frontend.vercel.app" })
 public class TicketController {
     // Store a reference to the service layer
     private final TicketService ticketService;

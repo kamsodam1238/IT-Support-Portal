@@ -12,7 +12,7 @@ import com.samuel.helpdesk_backend.service.AuthService;
 
 @RestController
 @CrossOrigin(origins = { "http://localhost:5173",
-        "https://YOUR-VERCEL-FRONTEND-URL.vercel.app" })
+        "https://it-support-portal-frontend.vercel.app" })
 public class AuthController {
     private final AuthService authService;
 
