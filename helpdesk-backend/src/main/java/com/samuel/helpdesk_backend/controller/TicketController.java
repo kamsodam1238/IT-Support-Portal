@@ -20,10 +20,11 @@ import java.util.List;
 // Used for returning dashboard summary data
 import java.util.Map;
 
-
 // This controller handles ticket-related endpoints
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+        "http://localhost:5173",
+        "https://YOUR-VERCEL-FRONTEND-URL.vercel.app" })
 public class TicketController {
     // Store a reference to the service layer
     private final TicketService ticketService;
@@ -35,13 +36,13 @@ public class TicketController {
     }
 
     // Endpoint: GET /api/tickets
-    @GetMapping("/api/tickets") 
+    @GetMapping("/api/tickets")
     public List<Ticket> getTickets() {
         return ticketService.getTickets();
     }
 
     @GetMapping("/api/tickets/{id}")
-    public Ticket getTicketById(@PathVariable Long id){
+    public Ticket getTicketById(@PathVariable Long id) {
         return ticketService.getTicketById(id);
     }
 
@@ -83,15 +84,14 @@ public class TicketController {
     }
 
     @GetMapping("/api/tickets/department/{department}")
-    public List<Ticket> getTicketsByDepartment(@PathVariable String department){
+    public List<Ticket> getTicketsByDepartment(@PathVariable String department) {
         return ticketService.getTicketsByDepartment(department);
     }
 
     @GetMapping("/api/tickets/priority/{priority}")
-    public List<Ticket> getTicketsByPriority(@PathVariable String priority){
+    public List<Ticket> getTicketsByPriority(@PathVariable String priority) {
         return ticketService.getTicketsByPriority(priority);
     }
-
 
     @GetMapping("/api/departments")
     public List<String> getDepartments() {

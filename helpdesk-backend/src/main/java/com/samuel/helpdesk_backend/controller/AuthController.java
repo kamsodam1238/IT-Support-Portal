@@ -11,7 +11,8 @@ import com.samuel.helpdesk_backend.model.LoginRequest;
 import com.samuel.helpdesk_backend.service.AuthService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = { "http://localhost:5173",
+        "https://YOUR-VERCEL-FRONTEND-URL.vercel.app" })
 public class AuthController {
     private final AuthService authService;
 
