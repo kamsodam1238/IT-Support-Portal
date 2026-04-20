@@ -13,6 +13,7 @@ COPY src ./src
 # Build the Spring Boot jar and skip tests
 RUN mvn clean package -DskipTests
 
+
 # Use a smaller JDK image to run the app
 FROM eclipse-temurin:21-jdk
 
