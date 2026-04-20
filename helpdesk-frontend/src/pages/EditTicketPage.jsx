@@ -3,7 +3,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import PageHeading from "../components/PageHeading";
 import { updateTicketInBackend } from "../services/ticketService";
 
-function EditTicketPage({ tickets, setTickets }) {
+function EditTicketPage({ tickets, setTickets, currentUser }) {
     const { id } = useParams();
     const navigate = useNavigate();
 
