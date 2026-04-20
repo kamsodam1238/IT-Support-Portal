@@ -1,8 +1,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-    color: #1f2937;
+    background-color: rgb(108, 121, 134);
+    color: #ffffff;
 }
 
 * {
@@ -11,7 +11,7 @@ body {
 
 a {
     text-decoration: none;
-    color: #2563eb;
+    color: rgb(69, 69, 182);
 }
 
 a:hover {
@@ -36,7 +36,7 @@ a:hover {
 }
 
 .navbar {
-    background-color: #ffffff;
+    background-color: #f7f7f7;
     border-radius: 12px;
     padding: 16px 20px;
     margin-bottom: 24px;
@@ -51,6 +51,7 @@ a:hover {
     display: flex;
     flex-wrap: wrap;
     gap: 14px;
+    color: #000000;
 }
 
 .navbar-user {
@@ -58,10 +59,11 @@ a:hover {
     display: flex;
     align-items: center;
     gap: 10px;
+    color: rgb(0, 0, 0);
 }
 
 .card {
-    background-color: #ffffff;
+    background-color: #78b3d4;
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 16px;
@@ -76,7 +78,7 @@ a:hover {
 }
 
 .form-card {
-    background-color: #ffffff;
+    background-color: #3f576b;
     border-radius: 14px;
     padding: 24px;
     width: 100%;
@@ -86,14 +88,18 @@ a:hover {
 
 .form-group {
     margin-bottom: 14px;
+    color: #3a2222;
 }
 
 .form-label {
     display: block;
     margin-bottom: 6px;
     font-weight: 600;
+    color: #121213;
 }
-
+h3{
+    color: #000000;
+}
 .form-input,
 .form-select,
 .form-textarea {
@@ -103,6 +109,7 @@ a:hover {
     border-radius: 8px;
     font-size: 14px;
     background-color: #fff;
+    color: black;
 }
 
 .form-input:focus,
@@ -161,7 +168,8 @@ a:hover {
 
 .message {
     margin-top: 14px;
-    font-size: 14px;
+    font-size: 16px;
+    color: #000000;
 }
 
 .error-text {
@@ -177,7 +185,8 @@ a:hover {
 }
 
 .info-box {
-    background-color: #ffffff;
+    background-color: #4563b6;
+    color: white;
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);

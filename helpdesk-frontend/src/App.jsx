@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-import "./styles/Styles.css"; 
+import "./styles/Styles.css";
 import DashboardPage from "./pages/DashboardPage";
 import TicketsPage from "./pages/TicketsPage";
 import CreateTicketPage from "./pages/CreateTicketPage";
@@ -148,7 +148,8 @@ function App() {
             <Route
               path="/tickets"
               element={
-                <ProtectedRoute currentUser={currentUser}>
+                <ProtectedRoute currentUser={currentUser}
+                  allowedRoles={["EMPLOYEE", "AGENT", "ADMIN"]}>
                   <TicketsPage
                     tickets={tickets}
                     deleteTicket={deleteTicket}

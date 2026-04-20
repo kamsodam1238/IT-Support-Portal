@@ -37,30 +37,31 @@ function DashboardPage({
             <PageHeading text="Dashboard" />
 
             {currentUser && (
-                <p className="center-text" style={{ marginBottom: "20px" }}>
-                    Welcome, <strong>{currentUser.name}</strong>. Role: {currentUser.role}
-                </p>
+                <div>
+                    <p className="center-text" style={{ marginBottom: "20px" }}>
+                        Welcome, <strong>{currentUser.name}</strong>. Role: {currentUser.role}
+                    </p>
+                    <div className="info-grid">
+                        <div className="info-box">Total Tickets: {totalTickets}</div>
+                        <div className="info-box">Open Tickets: {openTickets}</div>
+                        <div className="info-box">In Progress Tickets: {inProgressTickets}</div>
+                        <div className="info-box">Closed Tickets: {closedTickets}</div>
+                        <div className="info-box">High Priority Tickets: {highPriorityTickets}</div>
+                        <div className="info-box">Medium Priority Tickets: {mediumPriorityTickets}</div>
+                        <div className="info-box">Low Priority Tickets: {lowPriorityTickets}</div>
+                    </div>
+
+                    <div className="action-row" style={{ marginTop: "24px", justifyContent: "center" }}>
+                        <button className="button button-danger" onClick={clearAllTickets}>
+                            Clear All Tickets
+                        </button>
+
+                        <button className="button button-secondary" onClick={resetToDefaults}>
+                            Reset to Default Tickets
+                        </button>
+                    </div>
+                </div>
             )}
-
-            <div className="info-grid">
-                <div className="info-box">Total Tickets: {totalTickets}</div>
-                <div className="info-box">Open Tickets: {openTickets}</div>
-                <div className="info-box">In Progress Tickets: {inProgressTickets}</div>
-                <div className="info-box">Closed Tickets: {closedTickets}</div>
-                <div className="info-box">High Priority Tickets: {highPriorityTickets}</div>
-                <div className="info-box">Medium Priority Tickets: {mediumPriorityTickets}</div>
-                <div className="info-box">Low Priority Tickets: {lowPriorityTickets}</div>
-            </div>
-
-            <div className="action-row" style={{ marginTop: "24px", justifyContent: "center" }}>
-                <button className="button button-danger" onClick={clearAllTickets}>
-                    Clear All Tickets
-                </button>
-
-                <button className="button button-secondary" onClick={resetToDefaults}>
-                    Reset to Default Tickets
-                </button>
-            </div>
         </div>
     );
 }

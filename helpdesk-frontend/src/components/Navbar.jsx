@@ -5,8 +5,13 @@ function Navbar({ currentUser, logoutUser }) {
         <nav className="navbar">
             <div className="navbar-links">
                 <Link to="/">Dashboard</Link>
-                <Link to="/tickets">My Tickets</Link>
-                <Link to="/create-ticket">Create Ticket</Link>
+                {currentUser &&
+                    <div className="navbar-links">
+                        <Link to="/tickets">My Tickets</Link>
+                        <Link to="/create-ticket">Create Ticket</Link>
+                    </div>
+
+                }
                 <Link to="/about">About</Link>
                 {!currentUser && <Link to="/login">Login</Link>}
             </div>
