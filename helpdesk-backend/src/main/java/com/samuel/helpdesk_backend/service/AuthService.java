@@ -2,6 +2,7 @@ package com.samuel.helpdesk_backend.service;
 
 import java.util.Map;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.samuel.helpdesk_backend.model.LoginRequest;
 import com.samuel.helpdesk_backend.model.User;
@@ -10,9 +11,12 @@ import com.samuel.helpdesk_backend.repository.UserRepository;
 @Service
 public class AuthService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, 
+        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Map<String, Object> login(LoginRequest loginRequest) {
@@ -25,7 +29,7 @@ public class AuthService {
             );
         }
 
-        if (!user.getPassword().equals(loginRequest.getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             return Map.of(
                     "success", false,
                     "message", "Invalid password.");

@@ -8,16 +8,17 @@ import com.samuel.helpdesk_backend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 // This class holds startup configuration logic
 @Configuration
 public class DataSeeder {
 
-    // This runs automatically when Spring Boot starts
     @Bean
     CommandLineRunner seedDatabase(
             TicketRepository ticketRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
         ) {
         return args -> {
             // Only insert starter data if the table is empty
@@ -38,28 +39,28 @@ public class DataSeeder {
                         null,
                         "Samuel Kareem",
                         "samuel@example.com",
-                        "password123",
+                        passwordEncoder.encode("password123"),
                         "ADMIN"));
 
                 userRepository.save(new User(
                         null,
                         "IT Agent",
                         "agent@example.com",
-                        "password1238",
+                        passwordEncoder.encode("password1238"),
                         "AGENT"));
 
                 userRepository.save(new User(
                         null,
                         "Employee User",
                         "employee@example.com",
-                        "password1234",
+                        passwordEncoder.encode("password1234"),
                         "EMPLOYEE"));
 
                 userRepository.save(new User(
                     null,
                     "Debo Ski",
                     "deboski@yahoo.com",
-                    "deboski123",
+                    passwordEncoder.encode("deboski123"),
                     "AGENT"));
             }
         };
