@@ -36,6 +36,12 @@ function TicketCard({
                     View Details
                 </Link>
 
+                {canManageTickets && (
+                    <Link to={`/tickets/${id}/edit`} style={{ marginRight: "10px" }}>
+                        Edit
+                    </Link>
+                )}
+
                 {canManageTickets && status === "Open" && (
                     <button
                         onClick={() => inProgress(id)}
@@ -60,6 +66,7 @@ function TicketCard({
                         Delete
                     </button>
                 )}
+                
             </div>
         </div>
     );

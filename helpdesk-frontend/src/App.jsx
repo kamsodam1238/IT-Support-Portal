@@ -168,7 +168,7 @@ function App() {
           <Route
             path="/create-ticket"
             element={
-              <ProtectedRoute currentUser={currentUser}>
+              <ProtectedRoute currentUser={currentUser} allowedRoles={['EMPLOYEE', 'AGENT', 'ADMIN']}>
                 <CreateTicketPage addTicket={addTicket} />
               </ProtectedRoute>}
           />
@@ -179,6 +179,15 @@ function App() {
               <ProtectedRoute allowedRoles={['EMPLOYEE', 'AGENT', 'ADMIN']} currentUser={currentUser}>
                 <TicketDetailsPage tickets={tickets} />
               </ProtectedRoute>}
+          />
+
+          <Route
+            path="/tickets/:id/edit"
+            element={
+              <ProtectedRoute currentUser={currentUser} allowedRoles={["ADMIN", "AGENT"]}>
+                <EditTicketPage tickets={tickets} setTickets={setTickets} />
+              </ProtectedRoute>
+            }
           />
         </Routes>
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -106,6 +107,11 @@ public class TicketController {
     @GetMapping("/api/status-options")
     public List<String> getStatusOptions() {
         return ticketService.getStatusOptions();
+    }
+
+    @PutMapping("/api/tickets/{id}")
+    public Ticket updateTicket(@PathVariable Long id, @RequestBody Ticket updatedTicket) {
+        return ticketService.updateTicket(id, updatedTicket);
     }
 }
 

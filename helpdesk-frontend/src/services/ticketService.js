@@ -125,3 +125,19 @@ export async function closeTicketInBackend(ticketId) {
     return await response.json();
 }
 
+export async function updateTicketInBackend(ticketId, updatedTicket) {
+    const response = await fetch(`${API_BASE_URL}/tickets/${ticketId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedTicket)
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to update ticket in backend.");
+    }
+
+    return await response.json();
+}
+

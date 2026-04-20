@@ -135,4 +135,22 @@ public class TicketService {
     public List<String> getStatusOptions() {
         return List.of("Open", "In Progress", "Closed");
     }
+
+    public Ticket updateTicket(Long id, Ticket updatedTicket) {
+        Ticket existingTicket = ticketRepository.findById(id).orElse(null);
+
+        if (existingTicket == null) {
+            return null;
+        }
+
+        existingTicket.setTitle(updatedTicket.getTitle());
+        existingTicket.setStatus(updatedTicket.getStatus());
+        existingTicket.setPriority(updatedTicket.getPriority());
+        existingTicket.setDepartment(updatedTicket.getDepartment());
+        existingTicket.setSubmittedBy(updatedTicket.getSubmittedBy());
+        existingTicket.setCreatedAt(updatedTicket.getCreatedAt());
+        existingTicket.setDescription(updatedTicket.getDescription());
+
+        return ticketRepository.save(existingTicket);
+    }
 }
