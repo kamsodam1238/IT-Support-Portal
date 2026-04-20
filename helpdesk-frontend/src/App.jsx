@@ -10,6 +10,7 @@ import CreateTicketPage from "./pages/CreateTicketPage";
 import LoginPage from "./pages/LoginPage";
 import AboutPage from "./pages/AboutPage";
 import TicketDetailsPage from "./pages/TicketDetailsPage";
+import EditTicketPage from "./pages/EditTicketPage"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { getTickets, saveTickets, resetTickets, clearTickets, fetchTicketsFromBackend, deleteTicketInBackend, closeTicketInBackend } from "./services/ticketService";
 

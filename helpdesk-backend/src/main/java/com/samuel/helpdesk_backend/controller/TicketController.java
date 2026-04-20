@@ -115,13 +115,3 @@ public class TicketController {
     }
 }
 
-/*
- * /api/tickets
- * Returns a JSON array of ticket objects.
- * 
- * /api/dashboard-summary
- * Returns a JSON object with dashboard counts.
- * 
- * So instead of sending just plain text, your backend is now returning
- * structured data that a frontend can use.
- */
