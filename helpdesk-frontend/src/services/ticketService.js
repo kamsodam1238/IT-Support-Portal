@@ -45,6 +45,7 @@ export async function fetchTicketsFromBackend() {
     const response = await fetch(`${API_BASE_URL}/tickets`);
 
     if (!response.ok) {
+        const errorText = await response.text();
         throw new Error(`Failed to fetch tickets from backend: ${errorText}`);
     }
 
