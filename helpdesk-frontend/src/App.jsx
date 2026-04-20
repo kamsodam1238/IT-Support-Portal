@@ -124,83 +124,78 @@ function App() {
   }
 
   return (
-    // Main wrapper for the whole page
-    // BrowserRouter enables routing in the whole app
     <BrowserRouter>
-      <div className="app-shell page-container">
-        {/* Navbar appears on every page */}
-        <Navbar currentUser={currentUser} logoutUser={logoutUser} />
+      <div className="app-shell">
+        <div className="page-container">
+          <Navbar currentUser={currentUser} logoutUser={logoutUser} />
 
-        {/* 
-          Routes contains all route definitions.
-          Each Route connects a URL path to a page component.
-        */}
-        <Routes>
-          <Route path="/"
-            element={
-              <DashboardPage
-                tickets={tickets}
-                clearAllTickets={clearAllTickets}
-                resetToDefaults={resetToDefaults}
-                currentUser={currentUser}
-              />
-            }
-          />
-
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/login" element={<LoginPage setCurrentUser={setCurrentUser} />} />
-
-          <Route
-            path="/tickets"
-            element={
-              <ProtectedRoute currentUser={currentUser} >
-                <TicketsPage
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <DashboardPage
                   tickets={tickets}
-                  deleteTicket={deleteTicket}
-                  closeTicket={closeTicket}
-                  inProgress={inProgress}
                   clearAllTickets={clearAllTickets}
                   resetToDefaults={resetToDefaults}
                   currentUser={currentUser}
                 />
-              </ProtectedRoute>
-            }
-          />
+              }
+            />
 
-          <Route
-            path="/create-ticket"
-            element={
-              <ProtectedRoute currentUser={currentUser} allowedRoles={['EMPLOYEE', 'AGENT', 'ADMIN']}>
-                <CreateTicketPage addTicket={addTicket} />
-              </ProtectedRoute>}
-          />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/login" element={<LoginPage setCurrentUser={setCurrentUser} />} />
 
-          <Route
-            path="/tickets/:id"
-            element={
-              <ProtectedRoute allowedRoles={['EMPLOYEE', 'AGENT', 'ADMIN']} currentUser={currentUser}>
-                <TicketDetailsPage tickets={tickets} />
-              </ProtectedRoute>}
-          />
+            <Route
+              path="/tickets"
+              element={
+                <ProtectedRoute currentUser={currentUser}>
+                  <TicketsPage
+                    tickets={tickets}
+                    deleteTicket={deleteTicket}
+                    closeTicket={closeTicket}
+                    inProgress={inProgress}
+                    clearAllTickets={clearAllTickets}
+                    resetToDefaults={resetToDefaults}
+                    currentUser={currentUser}
+                  />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route
-            path="/tickets/:id/edit"
-            element={
-              <ProtectedRoute currentUser={currentUser}
-                allowedRoles={["ADMIN", "AGENT"]}
-              >
-                <EditTicketPage
-                  tickets={tickets}
-                  setTickets={setTickets} 
-                  currentUser={currentUser}
-                />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
+            <Route
+              path="/create-ticket"
+              element={
+                <ProtectedRoute currentUser={currentUser} allowedRoles={["EMPLOYEE", "AGENT", "ADMIN"]}>
+                  <CreateTicketPage addTicket={addTicket} />
+                </ProtectedRoute>
+              }
+            />
 
-        {/* Footer at the bottom */}
-        <Footer />
+            <Route
+              path="/tickets/:id"
+              element={
+                <ProtectedRoute currentUser={currentUser} allowedRoles={["EMPLOYEE", "AGENT", "ADMIN"]}>
+                  <TicketDetailsPage tickets={tickets} />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/tickets/:id/edit"
+              element={
+                <ProtectedRoute currentUser={currentUser} allowedRoles={["ADMIN", "AGENT"]}>
+                  <EditTicketPage
+                    tickets={tickets}
+                    setTickets={setTickets}
+                    currentUser={currentUser}
+                  />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+
+          <Footer />
+        </div>
       </div>
     </BrowserRouter>
   );

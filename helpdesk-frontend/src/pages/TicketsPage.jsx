@@ -1,7 +1,10 @@
 import { useState } from "react";
 import TicketList from "../components/TicketList";
 import PageHeading from "../components/PageHeading";
-import { fetchHighPriorityTicketsFromBackend, fetchOpenTicketsFromBackend } from "../services/ticketService";
+import {
+    fetchHighPriorityTicketsFromBackend,
+    fetchOpenTicketsFromBackend
+} from "../services/ticketService";
 
 function TicketsPage({
     tickets,
@@ -12,51 +15,43 @@ function TicketsPage({
     clearAllTickets,
     resetToDefaults
 }) {
-    // Search text typed by the user
     const [searchText, setSearchText] = useState("");
     const [statusFilter, setStatusFilter] = useState("All");
     const [priorityFilter, setPriorityFilter] = useState("All");
     const [departmentFilter, setDepartmentFilter] = useState("All");
     const [sortOption, setSortOption] = useState("Newest");
 
-    // Temporary backend-loaded ticket view
     const [backendViewTickets, setBackendViewTickets] = useState(null);
     const [backendLoading, setBackendLoading] = useState(false);
     const [backendError, setBackendError] = useState("");
 
-    // Use backend view if active, otherwise use app tickets
     let workingTickets = backendViewTickets || tickets;
-
-    // Start with a copy of tickets so we can filter and sort it
     let filteredTickets = [...workingTickets];
 
-    // Filter by title and submitter search
-    filteredTickets = filteredTickets.filter((ticket) =>
-        ticket.title.toLowerCase().includes(searchText.toLowerCase()) || ticket.submittedBy.toLowerCase().includes(searchText.toLowerCase())
+    filteredTickets = filteredTickets.filter(
+        (ticket) =>
+            ticket.title.toLowerCase().includes(searchText.toLowerCase()) ||
+            ticket.submittedBy.toLowerCase().includes(searchText.toLowerCase())
     );
 
-    // Filter by status if the user selected something other than All
     if (statusFilter !== "All") {
         filteredTickets = filteredTickets.filter(
             (ticket) => ticket.status === statusFilter
         );
     }
 
-    // Filter by priority if needed
     if (priorityFilter !== "All") {
         filteredTickets = filteredTickets.filter(
             (ticket) => ticket.priority === priorityFilter
         );
     }
 
-    // Filter by department if needed
     if (departmentFilter !== "All") {
         filteredTickets = filteredTickets.filter(
             (ticket) => ticket.department === departmentFilter
         );
     }
 
-    // Sort the filtered list
     if (sortOption === "Newest") {
         filteredTickets.sort((a, b) => b.id - a.id);
     }
@@ -95,6 +90,7 @@ function TicketsPage({
             setBackendLoading(false);
         }
     }
+
     async function loadHighPriorityTicketsFromBackend() {
         try {
             setBackendLoading(true);
@@ -109,42 +105,29 @@ function TicketsPage({
     }
 
     return (
-        <div>
-            <PageHeading text={"Tickets Page"} />
+        <div className="page-container">
+            <PageHeading text="Tickets Page" />
 
-            {/* Search and filter section */}
-            <div
-                style={{
-                    border: "1px solid white",
-                    padding: "16px",
-                    borderRadius: "8px",
-                    marginBottom: "20px",
-                    maxWidth: "700px"
-                }}
-            >
-                <h3>Search and Filter Tickets</h3>
+            <div className="card" style={{ maxWidth: "700px", margin: "0 auto 24px" }}>
+                <h3 style={{ marginTop: 0 }}>Search and Filter Tickets</h3>
 
-                {/* Search box */}
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Search by Title or Submitter</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Search by Title or Submitter</label>
                     <input
+                        className="form-input"
                         type="text"
                         value={searchText}
                         onChange={(event) => setSearchText(event.target.value)}
-                        placeholder="Search ticket title"
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
+                        placeholder="Search ticket title or submitter"
                     />
                 </div>
 
-                {/* Status filter */}
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Status Filter</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Status Filter</label>
                     <select
+                        className="form-select"
                         value={statusFilter}
                         onChange={(event) => setStatusFilter(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     >
                         <option value="All">All</option>
                         <option value="Open">Open</option>
@@ -153,14 +136,12 @@ function TicketsPage({
                     </select>
                 </div>
 
-                {/* Priority filter */}
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Priority Filter</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Priority Filter</label>
                     <select
+                        className="form-select"
                         value={priorityFilter}
                         onChange={(event) => setPriorityFilter(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     >
                         <option value="All">All</option>
                         <option value="High">High</option>
@@ -169,14 +150,12 @@ function TicketsPage({
                     </select>
                 </div>
 
-                {/* Department filter */}
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Department Filter</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Department Filter</label>
                     <select
+                        className="form-select"
                         value={departmentFilter}
                         onChange={(event) => setDepartmentFilter(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     >
                         <option value="All">All</option>
                         <option value="IT">IT</option>
@@ -185,14 +164,12 @@ function TicketsPage({
                     </select>
                 </div>
 
-                {/* Sort option */}
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Sort By</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Sort By</label>
                     <select
+                        className="form-select"
                         value={sortOption}
                         onChange={(event) => setSortOption(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     >
                         <option value="Newest">Newest</option>
                         <option value="Oldest">Oldest</option>
@@ -201,70 +178,39 @@ function TicketsPage({
                     </select>
                 </div>
 
-                <div style={{ marginBottom: "12px" }}>
-                    <button
-                        onClick={clearButton}
-                        style={{ padding: "10px 16px" }}>
+                <div className="action-row">
+                    <button className="button button-secondary" onClick={clearButton}>
                         Clear
                     </button>
-                </div>
 
-                {/* Clear all tickets */}
-                <div style={{ marginBottom: "12px" }}>
-                    <button
-                        onClick={clearAllTickets}
-                        style={{ padding: "10px 16px" }}>
+                    <button className="button button-danger" onClick={clearAllTickets}>
                         Clear All Tickets
                     </button>
-                </div>
 
-                {/* Load open tickets button */}
-                <div style={{ marginBottom: "12px" }}>
-                    <button
-                        onClick={loadOpenTicketsFromBackend}
-                        style={{ padding: "10px 16px" }}
-                    >
+                    <button className="button" onClick={loadOpenTicketsFromBackend}>
                         Load Open Tickets
                     </button>
-                </div>
 
-                {/* Load High priority tickets button */}
-                <div style={{ marginBottom: "12px" }}>
-                    <button
-                        onClick={loadHighPriorityTicketsFromBackend}
-                        style={{ padding: "10px 16px" }}
-                    >
+                    <button className="button" onClick={loadHighPriorityTicketsFromBackend}>
                         Load High Priority Tickets
                     </button>
-                </div>
 
-                {/* Reset all tickets to default */}
-                <div style={{ marginBottom: "12px" }}>
-                    <button
-                        onClick={resetToDefaults}
-                        style={{ padding: "10px 16px" }}
-                    >
+                    <button className="button button-secondary" onClick={resetToDefaults}>
                         Reset To Default Tickets
                     </button>
                 </div>
 
-                {backendLoading &&
-                    <p style={{ marginBottom: "12px" }}>
-                        {backendError}
-                    </p>
-                }
-                {backendError &&
-                    <p style={{ marginBottom: "12px" }}>
-                        Loading tickets from backend...
-                    </p>
-                }
-                
+                {backendLoading && (
+                    <p className="message">Loading tickets from backend...</p>
+                )}
 
-                {/* Show how many tickets match */}
-                <p>Matching Tickets: {filteredTickets.length}</p>
+                {backendError && (
+                    <p className="error-text">{backendError}</p>
+                )}
+
+                <p className="message">Matching Tickets: {filteredTickets.length}</p>
             </div>
 
-            {/* Reuse the TicketList and pass needed props */}
             <TicketList
                 tickets={filteredTickets}
                 deleteTicket={deleteTicket}
@@ -277,17 +223,3 @@ function TicketsPage({
 }
 
 export default TicketsPage;
-
-{/**
-This file manages the UI filters
-Why we copied the array first
-This line matters:
-let filteredTickets = [...tickets];
-
-We do this because:
-sort() changes the array in place
-we do not want to directly mutate the original tickets prop
-
-So we make a copy first.
-That is safer and more React-friendly.
-*/}

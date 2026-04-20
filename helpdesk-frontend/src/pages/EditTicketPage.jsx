@@ -18,12 +18,15 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
     const [createdAt, setCreatedAt] = useState(ticket ? ticket.createdAt : "");
     const [description, setDescription] = useState(ticket ? ticket.description || "" : "");
     const [message, setMessage] = useState("");
+    const [errors, setErrors] = useState({});
+    const [isSaving, setIsSaving] = useState(false);
 
     if (!ticket) {
         return (
-            <div>
+            <div className="page-container">
                 <PageHeading text="Ticket Not Found" />
                 <p>The ticket you are trying to edit does not exist.</p>
+                <Link to="/tickets">Back to Tickets</Link>
             </div>
         );
     }
@@ -31,87 +34,74 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
     async function handleSubmit(event) {
         event.preventDefault();
 
-        async function handleSubmit(event) {
-            event.preventDefault();
+        const newErrors = {};
 
-            const newErrors = {};
+        if (title.trim() === "") {
+            newErrors.title = "Title is required.";
+        }
 
-            if (title.trim() === "") {
-                newErrors.title = "Title is required.";
-            }
+        if (submittedBy.trim() === "") {
+            newErrors.submittedBy = "Submitted By is required.";
+        }
 
-            if (submittedBy.trim() === "") {
-                newErrors.submittedBy = "Submitted By is required.";
-            }
+        setErrors(newErrors);
+        setMessage("");
 
-            setErrors(newErrors);
+        if (Object.keys(newErrors).length > 0) {
+            return;
+        }
 
-            if (Object.keys(newErrors).length > 0) {
-                return;
-            }
+        const updatedTicket = {
+            title: title.trim(),
+            status,
+            priority,
+            department,
+            submittedBy: submittedBy.trim(),
+            createdAt: createdAt.trim(),
+            description: description.trim()
+        };
 
-            const updatedTicket = {
-                title: title.trim(),
-                status,
-                priority,
-                department,
-                submittedBy: submittedBy.trim(),
-                createdAt: createdAt.trim(),
-                description: description.trim()
-            };
+        setIsSaving(true);
 
-            setIsSaving(true);
+        try {
+            const savedTicket = await updateTicketInBackend(id, updatedTicket);
 
-            try {
-                const savedTicket = await updateTicketInBackend(id, updatedTicket);
+            setTickets((prevTickets) =>
+                prevTickets.map((ticket) =>
+                    String(ticket.id) === String(id) ? savedTicket : ticket
+                )
+            );
 
-                setTickets((prevTickets) =>
-                    prevTickets.map((ticket) =>
-                        String(ticket.id) === String(id) ? savedTicket : ticket
-                    )
-                );
-
-                navigate(`/tickets/${id}`);
-            } catch (error) {
-                setMessage(error.message);
-            } finally {
-                setIsSaving(false);
-            }
+            navigate(`/tickets/${id}`);
+        } catch (error) {
+            setMessage(error.message);
+        } finally {
+            setIsSaving(false);
         }
     }
 
     return (
-        <div>
-            <PageHeading text="Edit Ticket" />
+        <div className="form-wrapper">
+            <form onSubmit={handleSubmit} className="form-card">
+                <PageHeading text="Edit Ticket" />
 
-            <form
-                onSubmit={handleSubmit}
-                style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    borderRadius: "8px",
-                    maxWidth: "500px"
-                }}
-            >
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Title</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Title</label>
                     <input
+                        className="form-input"
                         type="text"
                         value={title}
                         onChange={(event) => setTitle(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     />
+                    {errors.title && <p className="error-text">{errors.title}</p>}
                 </div>
 
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Status</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Status</label>
                     <select
-                        type="text"
+                        className="form-select"
                         value={status}
                         onChange={(event) => setStatus(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     >
                         <option value="Open">Open</option>
                         <option value="In Progress">In Progress</option>
@@ -119,14 +109,13 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
                     </select>
                 </div>
 
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Priority</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Priority</label>
                     <select
+                        className="form-select"
                         value={priority}
                         onChange={(event) => setPriority(event.target.value)}
                         disabled={!isAdmin}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     >
                         <option value="High">High</option>
                         <option value="Medium">Medium</option>
@@ -134,13 +123,12 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
                     </select>
                 </div>
 
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Department</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Department</label>
                     <select
+                        className="form-select"
                         value={department}
                         onChange={(event) => setDepartment(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     >
                         <option value="IT">IT</option>
                         <option value="HR">HR</option>
@@ -148,48 +136,48 @@ function EditTicketPage({ tickets, setTickets, currentUser }) {
                     </select>
                 </div>
 
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Submitted By</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Submitted By</label>
                     <input
+                        className="form-input"
                         type="text"
                         value={submittedBy}
                         onChange={(event) => setSubmittedBy(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     />
+                    {errors.submittedBy && (
+                        <p className="error-text">{errors.submittedBy}</p>
+                    )}
                 </div>
 
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Created At</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Created At</label>
                     <input
+                        className="form-input"
                         type="text"
                         value={createdAt}
                         onChange={(event) => setCreatedAt(event.target.value)}
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     />
                 </div>
 
-                <div style={{ marginBottom: "12px" }}>
-                    <label>Description</label>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Description</label>
                     <textarea
+                        className="form-textarea"
                         value={description}
                         onChange={(event) => setDescription(event.target.value)}
                         rows="4"
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     />
                 </div>
 
-                <Link to={`/tickets/${id}`} style={{ marginRight: "12px" }}>
-                    Cancel
-                </Link>
+                <div className="action-row">
+                    <Link to={`/tickets/${id}`}>Cancel</Link>
 
-                <button type="submit" style={{ padding: "10px 16px" }}>
-                    Save Changes
-                </button>
+                    <button className="button" type="submit" disabled={isSaving}>
+                        {isSaving ? "Saving..." : "Save Changes"}
+                    </button>
+                </div>
 
-                {message && <p style={{ marginTop: "12px" }}>{message}</p>}
+                {message && <p className="message">{message}</p>}
             </form>
         </div>
     );

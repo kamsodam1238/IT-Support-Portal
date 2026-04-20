@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import PageHeading from "../components/PageHeading";
 import { loginUser } from "../services/authService";
 
@@ -7,19 +7,44 @@ function LoginPage({ setCurrentUser }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
+    const [errors, setErrors] = useState({});
+    const [isSaving, setIsSaving] = useState(false);
 
     const navigate = useNavigate();
+
+    if (localStorage.getItem("currentUser")) {
+        return <Navigate to="/" replace />;
+    }
+
+    function validateForm() {
+        const newErrors = {};
+
+        if (email.trim() === "") {
+            newErrors.email = "Email is required.";
+        }
+
+        if (password.trim() === "") {
+            newErrors.password = "Password is required.";
+        }
+
+        return newErrors;
+    }
 
     async function handleSubmit(event) {
         event.preventDefault();
 
+        const validationErrors = validateForm();
+        setErrors(validationErrors);
+        setMessage("");
+
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
+
         const cleanedEmail = email.trim();
         const cleanedPassword = password.trim();
 
-        if (cleanedEmail === "" || cleanedPassword === "") {
-            setMessage("Please enter both email and password.");
-            return;
-        }
+        setIsSaving(true);
 
         try {
             const result = await loginUser({
@@ -28,12 +53,8 @@ function LoginPage({ setCurrentUser }) {
             });
 
             if (result.success) {
-                // Save user info in localStorage
                 localStorage.setItem("currentUser", JSON.stringify(result));
-
-                // Update app-level user state
                 setCurrentUser(result);
-
                 setMessage("Login successful.");
                 navigate("/");
             } else {
@@ -41,55 +62,46 @@ function LoginPage({ setCurrentUser }) {
             }
         } catch (error) {
             setMessage(error.message);
-        }
-
-        if (localStorage.getItem("currentUser")) {
-            return <Navigate to="/" replace />;
+        } finally {
+            setIsSaving(false);
         }
     }
-    return (
-        <div>
-            <PageHeading text={"Login"} />
 
-            <form
-                onSubmit={handleSubmit}
-                style={{
-                    border: "1px solid #ccc",
-                    padding: "20px",
-                    borderRadius: "8px",
-                    maxWidth: "400px"
-                }}
-            >
-                <div style={{ marginBottom: "12px" }} >
-                    <label>Email</label>
-                    <br />
+    return (
+        <div className="form-wrapper">
+            <form onSubmit={handleSubmit} className="form-card">
+                <PageHeading text="Login" />
+
+                <div className="form-group">
+                    <label className="form-label">Email</label>
                     <input
+                        className="form-input"
                         type="email"
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
                         placeholder="Enter your email"
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     />
+                    {errors.email && <p className="error-text">{errors.email}</p>}
                 </div>
 
-                <div>
-                    <br />
+                <div className="form-group">
+                    <label className="form-label">Password</label>
                     <input
+                        className="form-input"
                         type="password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         placeholder="Enter your password"
-                        style={{ width: "100%", padding: "8px", marginTop: "4px" }}
                     />
+                    {errors.password && <p className="error-text">{errors.password}</p>}
                 </div>
 
-                <button type="submit" style={{ padding: "10px 16px" }}>
-                    Log In
+                <button className="button" type="submit" disabled={isSaving}>
+                    {isSaving ? "Logging in..." : "Log In"}
                 </button>
 
-                {message && <p style={{ marginTop: "12px" }}>{message}</p>}
+                {message && <p className="message">{message}</p>}
             </form>
-
         </div>
     );
 }

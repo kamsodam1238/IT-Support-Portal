@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
 import PageHeading from "../components/PageHeading";
-import { fetchDashboardSummaryFromBackend } from "../services/ticketService";
 
 function DashboardPage({
     tickets,
@@ -34,44 +32,36 @@ function DashboardPage({
         (ticket) => ticket.priority === "Low"
     ).length;
 
-
     return (
-        <div>
-            <PageHeading text={"Dashboard"} />
+        <div className="page-container">
+            <PageHeading text="Dashboard" />
 
             {currentUser && (
-                <p>
+                <p className="center-text" style={{ marginBottom: "20px" }}>
                     Welcome, <strong>{currentUser.name}</strong>. Role: {currentUser.role}
                 </p>
             )}
 
-            <p>Total Tickets: {totalTickets}</p>
-            <p>Open Tickets: {openTickets}</p>
-            <p>In Progress Tickets: {inProgressTickets}</p>
-            <p>Closed Tickets: {closedTickets}</p>
-            <p>High Priority Tickets: {highPriorityTickets}</p>
-            <p>Medium Priority Tickets: {mediumPriorityTickets}</p>
-            <p>Low Priority Tickets: {lowPriorityTickets}</p>
+            <div className="info-grid">
+                <div className="info-box">Total Tickets: {totalTickets}</div>
+                <div className="info-box">Open Tickets: {openTickets}</div>
+                <div className="info-box">In Progress Tickets: {inProgressTickets}</div>
+                <div className="info-box">Closed Tickets: {closedTickets}</div>
+                <div className="info-box">High Priority Tickets: {highPriorityTickets}</div>
+                <div className="info-box">Medium Priority Tickets: {mediumPriorityTickets}</div>
+                <div className="info-box">Low Priority Tickets: {lowPriorityTickets}</div>
+            </div>
 
-
-            {/* Dashboard action buttons */}
-            <div style={{ marginTop: "16px" }}>
-                <button
-                    onClick={clearAllTickets}
-                    style={{ marginRight: "10px", padding: "8px 12px" }}
-                >
+            <div className="action-row" style={{ marginTop: "24px", justifyContent: "center" }}>
+                <button className="button button-danger" onClick={clearAllTickets}>
                     Clear All Tickets
                 </button>
 
-                <button
-                    onClick={resetToDefaults}
-                    style={{ padding: "8px 12px" }}
-                >
+                <button className="button button-secondary" onClick={resetToDefaults}>
                     Reset to Default Tickets
                 </button>
             </div>
         </div>
-
     );
 }
 
