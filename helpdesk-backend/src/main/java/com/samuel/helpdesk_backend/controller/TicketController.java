@@ -113,5 +113,10 @@ public class TicketController {
     public Ticket updateTicket(@PathVariable Long id, @RequestBody Ticket updatedTicket) {
         return ticketService.updateTicket(id, updatedTicket);
     }
+
+    @GetMapping("/api/users/{userId}/tickets")
+    public List<Ticket> getTicketsByUserId(@PathVariable Long userId) {
+        return ticketService.getTicketsByUserId(userId);
+    }
 }
 

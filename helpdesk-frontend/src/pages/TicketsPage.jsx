@@ -26,6 +26,13 @@ function TicketsPage({
     const [backendError, setBackendError] = useState("");
 
     let workingTickets = backendViewTickets || tickets;
+
+    if (currentUser && currentUser.role === "EMPLOYEE") {
+        workingTickets = workingTickets.filter(
+            (ticket) => ticket.userId === currentUser.userId
+        );
+    }
+    
     let filteredTickets = [...workingTickets];
 
     filteredTickets = filteredTickets.filter(

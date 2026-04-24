@@ -153,4 +153,8 @@ public class TicketService {
 
         return ticketRepository.save(existingTicket);
     }
+
+    public List<Ticket> getTicketsByUserId(Long userId) {
+        return ticketRepository.findByUserId(userId);
+    }
 }

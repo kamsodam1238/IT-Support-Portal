@@ -13,7 +13,12 @@ function Navbar({ currentUser, logoutUser }) {
 
                 }
                 <Link to="/about">About</Link>
-                {!currentUser && <Link to="/login">Login</Link>}
+                {!currentUser && (
+                    <div className="navbar-links">
+                        <Link to="/login">Login</Link>
+                        <Link to={"/signup"}>Sign Up</Link>
+                    </div>
+                )}
             </div>
 
             {currentUser && (

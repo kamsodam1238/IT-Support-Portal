@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.samuel.helpdesk_backend.model.LoginRequest;
+import com.samuel.helpdesk_backend.model.SignupRequest;
 import com.samuel.helpdesk_backend.service.AuthService;
 
 @RestController
@@ -18,6 +19,11 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @PostMapping("/api/auth/signup")
+    public Map<String, Object> signup(@RequestBody SignupRequest signupRequest) {
+        return authService.signup(signupRequest);
     }
 
     @PostMapping("/api/auth/login")

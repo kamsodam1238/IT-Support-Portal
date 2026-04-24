@@ -6,31 +6,37 @@ function DashboardPage({
     resetToDefaults,
     currentUser
 }) {
-    const totalTickets = tickets.length;
+    const visibleTickets =
+        currentUser && currentUser.role === "EMPLOYEE"
+            ? tickets.filter((ticket) => ticket.userId === currentUser.userId)
+            : tickets;
+    const totalTickets = visibleTickets.length;
 
-    const openTickets = tickets.filter(
+    const openTickets = visibleTickets.filter(
         (ticket) => ticket.status === "Open"
     ).length;
 
-    const closedTickets = tickets.filter(
+    const closedTickets = visibleTickets.filter(
         (ticket) => ticket.status === "Closed"
     ).length;
 
-    const inProgressTickets = tickets.filter(
+    const inProgressTickets = visibleTickets.filter(
         (ticket) => ticket.status === "In Progress"
     ).length;
 
-    const highPriorityTickets = tickets.filter(
+    const highPriorityTickets = visibleTickets.filter(
         (ticket) => ticket.priority === "High"
     ).length;
 
-    const mediumPriorityTickets = tickets.filter(
+    const mediumPriorityTickets = visibleTickets.filter(
         (ticket) => ticket.priority === "Medium"
     ).length;
 
-    const lowPriorityTickets = tickets.filter(
+    const lowPriorityTickets = visibleTickets.filter(
         (ticket) => ticket.priority === "Low"
     ).length;
+
+    
 
     return (
         <div className="page-container">

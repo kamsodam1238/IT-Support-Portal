@@ -1,7 +1,7 @@
 # IT Support Portal
 
 ## Overview
-IT Support Portal is a full-stack help desk ticketing system built with React, Spring Boot, and PostgreSQL. It allows users to log in, create tickets, edit tickets, filter and search tickets, and manage ticket status through a deployed frontend connected to a REST API backend.
+IT Support Portal is a full-stack help desk ticketing system built with React, Spring Boot, and PostgreSQL. The application supports signup, login, ticket creation, editing, filtering, status management, and role-based actions. It also includes user-specific ticket ownership, separate employee views, BCrypt password hashing, and automatic cleanup of temporary accounts to manage storage in a deployed full-stack environment using Vercel, Render, and Neon.
 
 This project was built to simulate a real internal support workflow and demonstrate practical full-stack software engineering skills, including frontend-backend integration, authentication basics, role-based UI behavior, database persistence, and cloud deployment.
 

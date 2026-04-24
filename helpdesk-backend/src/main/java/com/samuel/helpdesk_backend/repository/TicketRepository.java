@@ -11,4 +11,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByPriority(String priority);
     List<Ticket> findByDepartmentIgnoreCase(String department);
     List<Ticket> findByPriorityIgnoreCase(String priority);
+    List<Ticket> findByUserId(Long userId);
+    void deleteByUserId(Long userId);
 }

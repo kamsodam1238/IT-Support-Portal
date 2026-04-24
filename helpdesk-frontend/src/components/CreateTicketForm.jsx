@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createTicketInBackend } from "../services/ticketService";
 
-function CreateTicketForm({ addTicket }) {
+function CreateTicketForm({ addTicket, currrentUser }) {
     const [title, setTitle] = useState("");
     const [status, setStatus] = useState("");
     const [priority, setPriority] = useState("");
@@ -66,7 +66,8 @@ function CreateTicketForm({ addTicket }) {
             department: cleanedDepartment,
             submittedBy: cleanedSubmittedBy,
             createdAt: new Date().toLocaleString(),
-            description: cleanedDescription
+            description: cleanedDescription,
+            userId: currrentUser.userId
         };
 
         setIsSaving(true);

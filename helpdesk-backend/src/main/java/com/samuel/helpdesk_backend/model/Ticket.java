@@ -32,6 +32,7 @@ public class Ticket {
 
     private String createdAt;
     private String description;
+    private Long userId;
 
     
     // Constructors
@@ -40,7 +41,7 @@ public class Ticket {
     }
     
     public Ticket(Long id, String title, String status, String priority, String department, String submittedBy,
-        String createdAt, String description) {
+        String createdAt, String description, Long userId) {
             this.id = id;
             this.title = title;
             this.status = status;
@@ -49,6 +50,7 @@ public class Ticket {
             this.submittedBy = submittedBy;
             this.createdAt = createdAt;
             this.description = description;
+            this.userId = userId;
         }
         
         // Getter and Setters
@@ -113,6 +115,14 @@ public class Ticket {
     
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public Long getUserId() {
+            return userId;
+        }
+
+        public void setUserId(Long userId) {
+            this.userId = userId;
         }
     }
     

@@ -18,8 +18,7 @@ public class DataSeeder {
     CommandLineRunner seedDatabase(
             TicketRepository ticketRepository,
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder
-        ) {
+            PasswordEncoder passwordEncoder) {
         return args -> {
             // Only insert starter data if the table is empty
             if (ticketRepository.count() == 0) {
@@ -31,7 +30,9 @@ public class DataSeeder {
                         "IT",
                         "Samuel Kareem",
                         "4/1/2026, 9:00:00 AM",
-                        "The office printer is not responding to print jobs."));
+                        "The office printer is not responding to print jobs.",
+                        1L
+                    ));
             }
 
             if (userRepository.count() == 0) {
@@ -40,28 +41,27 @@ public class DataSeeder {
                         "Samuel Kareem",
                         "samuel@example.com",
                         passwordEncoder.encode("password123"),
-                        "ADMIN"));
+                        "ADMIN",
+                        java.time.LocalDateTime.now().toString(),
+                        true));
 
                 userRepository.save(new User(
                         null,
                         "IT Agent",
                         "agent@example.com",
                         passwordEncoder.encode("password1238"),
-                        "AGENT"));
+                        "AGENT",
+                        java.time.LocalDateTime.now().toString(),
+                        false));
 
                 userRepository.save(new User(
                         null,
                         "Employee User",
                         "employee@example.com",
                         passwordEncoder.encode("password1234"),
-                        "EMPLOYEE"));
-
-                userRepository.save(new User(
-                    null,
-                    "Debo Ski",
-                    "deboski@yahoo.com",
-                    passwordEncoder.encode("deboski123"),
-                    "AGENT"));
+                        "EMPLOYEE",
+                        java.time.LocalDateTime.now().toString(),
+                        false));
             }
         };
     }
